@@ -1,6 +1,7 @@
 ﻿using FirstAPI.DTO;
 using FirstAPI.GenericResponse;
 using FirstAPI.IService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,7 @@ namespace FirstAPI.Controllers
             this._authService = authService;
         }
 
-        [HttpPost("Login")]
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserDTO userdto)
         {
             try
@@ -27,19 +28,18 @@ namespace FirstAPI.Controllers
 
                 if (result.Item1 == 0)
                 {
-                    return NotFound(ResponseResult<string>.Failure(null, result.Item2));
+                    return NotFound(ResponseResult<TokenDTO>.Failure(result.Item2,result.Item2.Message));
                 }
                 if (result.Item1 == 1)
                 {
-                    return BadRequest(ResponseResult<string>.Failure(null, result.Item2));
+                    return BadRequest(ResponseResult<TokenDTO>.Failure(result.Item2,result.Item2.Message));
                 }
 
                 if (result.Item1 == 4)
                 {
-                    return Unauthorized(ResponseResult<string>.Failure(null, result.Item2));
+                    return Unauthorized(ResponseResult<TokenDTO>.Failure(result.Item2,result.Item2.Message));
                 }
-                return Ok(ResponseResult<string>.Success(null, result.Item2));
-
+                return Ok(ResponseResult<TokenDTO>.Success(result.Item2, result.Item2.Message));
             }
             catch (Exception)
             {
@@ -47,7 +47,7 @@ namespace FirstAPI.Controllers
             }
         }
 
-        [HttpPost("Register")]
+        [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserDTO userdto)
         {
             try

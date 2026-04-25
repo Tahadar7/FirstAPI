@@ -4,6 +4,7 @@ using FirstAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FirstAPI.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20260425105044_db_add_department")]
+    partial class db_add_department
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,25 +76,6 @@ namespace FirstAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Employees");
-                });
-
-            modelBuilder.Entity("FirstAPI.Entities.Salary", b =>
-                {
-                    b.Property<int>("SalaryBandId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SalaryBandId"));
-
-                    b.Property<decimal>("MaxSalary")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("MinSalary")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("SalaryBandId");
-
-                    b.ToTable("Salaries");
                 });
 
             modelBuilder.Entity("FirstAPI.Entities.User", b =>
